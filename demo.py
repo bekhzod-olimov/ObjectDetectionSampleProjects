@@ -72,8 +72,8 @@ class StreamlitApp:
                 break
                 
             # Process frame
-            results = model.predict(frame)
-            annotated_frame = results[0].plot()
+            result = model.demo(frame)
+            annotated_frame = result["pred"]                      
             out.write(annotated_frame)
             
             # Update progress
@@ -104,8 +104,7 @@ class StreamlitApp:
         st.title(self.LANGUAGES[self.lang_code]["title"])
         st.write(self.LANGUAGES[self.lang_code]["description"])
 
-        self.train_name = f"{self.ds_nomi}_{os.path.splitext(self.model_name)[0]}"
-        print(self.train_name)
+        self.train_name = f"{self.ds_nomi}_{os.path.splitext(self.model_name)[0]}"        
         model = load_model(save_path=os.path.join("runs", "detect", f"{self.train_name}"))
         yolo_infer = YOLOv11Inference(model, train_name=self.train_name)
 
@@ -209,7 +208,7 @@ class StreamlitApp:
                 video_path = tfile.name
 
             # Process video
-            output_path = self.process_video(yolo_infer.model, video_path)
+            output_path = self.process_video(yolo_infer, video_path)
             
             # Display results
             st.subheader("Processed Video")
@@ -229,7 +228,8 @@ def parse_args():
 
 if __name__ == "__main__":
     args = parse_args()
-    available_datasets = [os.path.basename(res).split("_results")[0].split("_")[0] for res in glob(f"results/images/*.png")]
+    # available_datasets = [os.path.basename(res).split("_results")[0].split("_")[0] for res in glob(f"results/images/*.png")]
+    available_datasets = [os.path.basename(res).split("_cls_names")[0].split("_")[0] for res in glob(f"saved_cls_names/*.pkl")]
     # available_datasets = [os.path.splitext(os.path.basename(res))[0] for res in glob(f"results/videos/*.mp4")]
     ds_nomi = st.sidebar.selectbox("Choose Dataset", options=available_datasets, index=0)
     model_name = st.sidebar.text_input("Model name", value=args.model_name)    

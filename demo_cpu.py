@@ -22,6 +22,7 @@ class StreamlitApp:
     def __init__(self, ds_nomi, model_name, device):
         self.ds_nomi = ds_nomi
         self.device = device
+        print(f"self.device -> {self.device}")
         self.model_name = model_name        
         self.lang_code = "en"
         self.mode = "image"  # New mode selector
@@ -233,8 +234,7 @@ if __name__ == "__main__":
     # available_datasets = [os.path.splitext(os.path.basename(res))[0] for res in glob(f"results/videos/*.mp4")]
     ds_nomi = st.sidebar.selectbox("Choose Dataset", options=available_datasets, index=0)
     model_name = st.sidebar.text_input("Model name", value=args.model_name)    
-    device = args.device if args.device == "cpu" else [0]
-    print(f"device -> {device}")
+    device = args.device if args.device == "cpu" else [0]    
 
     app = StreamlitApp(
         ds_nomi=ds_nomi,

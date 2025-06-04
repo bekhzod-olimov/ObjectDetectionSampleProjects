@@ -119,9 +119,7 @@ class StreamlitApp:
     def handle_image_mode(self, yolo_infer):
         # Original image handling code remains unchanged
         sample_ims_dir = "demo_ims"
-        ims_dir = "/home/bekhzod/Desktop/backup/object_detection_project_datasets"
-
-        st.write(self.LANGUAGES[self.lang_code]["description"])
+        ims_dir = "/home/bekhzod/Desktop/backup/object_detection_project_datasets"       
         
         # Original image sampling logic
         sample_ims_dir = "demo_ims"

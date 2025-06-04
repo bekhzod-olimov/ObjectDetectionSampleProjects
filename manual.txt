@@ -1,2 +1,2 @@
 # Video Maker
-python video_maker.py /home/bekhzod/Desktop/backup/object_detection_project_datasets/baggage/baggage/test/images sample_videos/baggage.mp4 30
+python video_maker.py /home/bekhzod/Desktop/backup/object_detection_project_datasets/baggage/baggage/test/images sample_videos/baggage.mp4 30 30

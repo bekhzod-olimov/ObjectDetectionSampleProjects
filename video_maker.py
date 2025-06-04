@@ -3,9 +3,9 @@ import os
 import sys
 from glob import glob
 
-def images_to_video(image_folder, output_video_path, fps=30):
+def images_to_video(image_folder, output_video_path, n_ims, fps=30):
     # Get sorted image paths
-    images = sorted(glob(os.path.join(image_folder, '*')))
+    images = sorted(glob(os.path.join(image_folder, '*')))[:n_ims]
     if not images:
         print(f"No images found in: {image_folder}")
         return
@@ -29,10 +29,12 @@ def images_to_video(image_folder, output_video_path, fps=30):
 
 if __name__ == '__main__':
     if len(sys.argv) < 3:
-        print("Usage: python img2video.py <input_folder> <output_path> [fps=30]")
-        print("Example: python img2video.py ./images output.mp4 24")
+        print("Usage: python video_maker.py <input_folder> <output_path> [fps=30]")
+        print("Example: python video_maker.py ./images output.mp4 24")
     else:
         input_folder = sys.argv[1]
         output_path = sys.argv[2]
         fps = int(sys.argv[3]) if len(sys.argv) > 3 else 30
-        images_to_video(input_folder, output_path, fps)
+        n_ims = int(sys.argv[4])
+        print("Video is being generated...")
+        images_to_video(input_folder, output_path, fps, n_ims)

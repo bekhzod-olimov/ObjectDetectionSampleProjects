@@ -104,9 +104,10 @@ class StreamlitApp:
         st.title(self.LANGUAGES[self.lang_code]["title"])
         st.write(self.LANGUAGES[self.lang_code]["description"])
 
-        train_name = f"{self.ds_nomi}_{os.path.splitext(self.model_name)[0]}"
-        model = load_model(save_path=os.path.join("runs", "detect", f"{train_name}"))
-        yolo_infer = YOLOv11Inference(model, train_name=train_name)
+        self.train_name = f"{self.ds_nomi}_{os.path.splitext(self.model_name)[0]}"
+        print(self.train_name)
+        model = load_model(save_path=os.path.join("runs", "detect", f"{self.train_name}"))
+        yolo_infer = YOLOv11Inference(model, train_name=self.train_name)
 
         if self.mode == "image":
             # Existing image processing code
@@ -148,7 +149,7 @@ class StreamlitApp:
         )
 
         im_path = uploaded_image or selected_image
-        res_save_dir = "results/images"
+        res_save_dir = os.path.join("results", "images", self.train_name)
         makedirs(res_save_dir)
 
         if im_path:
@@ -228,7 +229,8 @@ def parse_args():
 
 if __name__ == "__main__":
     args = parse_args()
-    available_datasets = [os.path.basename(res).split("_results")[0].split("_")[0] for res in glob(f"results/*.png")]
+    available_datasets = [os.path.basename(res).split("_results")[0].split("_")[0] for res in glob(f"results/images/*.png")]
+    # available_datasets = [os.path.splitext(os.path.basename(res))[0] for res in glob(f"results/videos/*.mp4")]
     ds_nomi = st.sidebar.selectbox("Choose Dataset", options=available_datasets, index=0)
     model_name = st.sidebar.text_input("Model name", value=args.model_name)    
     device = args.device if args.device == "cpu" else [0]

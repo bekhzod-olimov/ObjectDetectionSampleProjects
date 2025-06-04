@@ -38,8 +38,7 @@ class YOLOv11Inference:
     
     def process_res(self, r, or_im_rgb, demo=None):
 
-        self.num_bboxes = len(r)
-        print(f"self.num_bboxes -> {self.num_bboxes}")
+        self.num_bboxes = len(r)        
         for i in r:   
             cls_names = i.names                       
             for bbox in i.boxes:                

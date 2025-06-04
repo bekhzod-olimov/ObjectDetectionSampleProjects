@@ -174,10 +174,9 @@ class StreamlitApp:
             st.markdown(f"<h2 style='text-align: center;'>{num_bboxes} {cnt_objects} detected.</h2>",
                        unsafe_allow_html=True)
             
-            final_path = os.path.join(res_save_dir, f"{os.path.splitext(os.path.basename(im_path))[0]}_.png")
-            print(final_path)
-            (Image.fromarray(result["pred"])).save(final_path)
-            st.success(f"Image saved to: {final_path}")
+            # final_path = os.path.join(res_save_dir, f"{os.path.splitext(os.path.basename(im_path))[0]}_.png")            
+            # (Image.fromarray(result["pred"])).save(final_path)
+            # st.success(f"Image saved to: {final_path}")
         else:
             st.warning("Please select or upload an image.")
 
@@ -217,9 +216,9 @@ class StreamlitApp:
                 st.video(video_bytes)  # This ensures immediate playback[4][6]
             
             # Save to permanent location
-            final_path = os.path.join(save_dir, os.path.basename(video_path))
-            os.rename(output_path, final_path)
-            st.success(f"Video saved to: {final_path}")
+            # final_path = os.path.join(save_dir, os.path.basename(video_path))
+            # os.rename(output_path, final_path)
+            # st.success(f"Video saved to: {final_path}")
 
 def parse_args():
     import argparse

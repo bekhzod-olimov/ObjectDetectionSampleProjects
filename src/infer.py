@@ -38,6 +38,7 @@ class YOLOv11Inference:
     
     def process_res(self, r, or_im_rgb, demo=None):
 
+        self.num_bboxes = len(r)
         for i in r:   
             cls_names = i.names                       
             for bbox in i.boxes:                
@@ -51,8 +52,6 @@ class YOLOv11Inference:
                 text_x = coord1[0] + (coord2[0] - coord1[0] - text_width) // 2
                 text_y = coord1[1] + (coord2[1] - coord1[1] + text_height) // 2
                 cv2.putText(or_im_rgb, text, (text_x, text_y), self.font, self.font_scale, color, self.thickness, cv2.LINE_AA)
-        
-            self.num_bboxes = len(i.boxes)
         
         if demo: return or_im_rgb
 

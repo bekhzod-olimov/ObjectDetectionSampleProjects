@@ -234,6 +234,7 @@ if __name__ == "__main__":
     ds_nomi = st.sidebar.selectbox("Choose Dataset", options=available_datasets, index=0)
     model_name = st.sidebar.text_input("Model name", value=args.model_name)    
     device = args.device if args.device == "cpu" else [0]
+    print(f"device -> {device}")
 
     app = StreamlitApp(
         ds_nomi=ds_nomi,

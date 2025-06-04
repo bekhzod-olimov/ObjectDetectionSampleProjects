@@ -106,7 +106,7 @@ class StreamlitApp:
 
         self.train_name = f"{self.ds_nomi}_{os.path.splitext(self.model_name)[0]}"        
         model = load_model(save_path=os.path.join("runs", "detect", f"{self.train_name}"))
-        yolo_infer = YOLOv11Inference(model, train_name=self.train_name)
+        yolo_infer = YOLOv11Inference(model, train_name=self.train_name, device = self.device)
 
         if self.mode == "image":
             # Existing image processing code

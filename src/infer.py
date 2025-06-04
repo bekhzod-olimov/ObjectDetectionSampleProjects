@@ -4,7 +4,7 @@ from PIL import Image
 from src.utils import makedirs
 
 class YOLOv11Inference:
-    def __init__(self, model, train_name, save_dir = None, device="cuda"):
+    def __init__(self, model, train_name, device, save_dir = None):
         
         self.res_dir, self.train_name = save_dir, train_name
         self.font = cv2.FONT_HERSHEY_SIMPLEX

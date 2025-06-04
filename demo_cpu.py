@@ -210,10 +210,11 @@ class StreamlitApp:
 
             # Process video
             output_path = self.process_video(yolo_infer, video_path)
-            
-            # Display results
+
             st.subheader("Processed Video")
-            st.video(output_path)
+            with open(output_path, "rb") as f:
+                video_bytes = f.read()
+                st.video(video_bytes)  # This ensures immediate playback[4][6]
             
             # Save to permanent location
             final_path = os.path.join(save_dir, os.path.basename(video_path))

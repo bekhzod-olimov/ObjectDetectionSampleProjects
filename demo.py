@@ -4,11 +4,11 @@ import streamlit as st
 import torch
 import random
 import os
-import pickle
 import cv2
 import tempfile
 from PIL import Image
 from glob import glob
+from src.utils import makedirs
 from src.infer import YOLOv11Inference 
 from ultralytics import YOLO
 
@@ -127,7 +127,7 @@ class StreamlitApp:
         ims_dir = "/home/bekhzod/Desktop/backup/object_detection_project_datasets"
         
         save_dir = os.path.join(sample_ims_dir, self.ds_nomi)
-        os.makedirs(save_dir, exist_ok=True)
+        makedirs(save_dir)
         sample_image_paths = glob(os.path.join(save_dir, "*.png"))
 
         if not sample_image_paths:
@@ -148,6 +148,8 @@ class StreamlitApp:
         )
 
         im_path = uploaded_image or selected_image
+        res_save_dir = "results/images"
+        makedirs(res_save_dir)
 
         if im_path:
             with st.spinner("Running inference..."):
@@ -165,8 +167,16 @@ class StreamlitApp:
                            unsafe_allow_html=True)
                 st.image(result["pred"], use_container_width=True)
             
-            st.markdown(f"<h2 style='text-align: center;'>{result['n_bboxes']} objects detected</h2>",
+            num_bboxes  = result['n_bboxes']
+            cnt_objects = "objects are" if num_bboxes >= 2 else "object is"
+            
+            st.markdown(f"<h2 style='text-align: center;'>{num_bboxes} {cnt_objects} detected.</h2>",
                        unsafe_allow_html=True)
+            
+            final_path = os.path.join(res_save_dir, f"{os.path.splitext(os.path.basename(im_path))[0]}_.png")
+            print(final_path)
+            (Image.fromarray(result["pred"])).save(final_path)
+            st.success(f"Image saved to: {final_path}")
         else:
             st.warning("Please select or upload an image.")
 

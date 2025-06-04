@@ -20,7 +20,7 @@ def parse_args():
     parser.add_argument('--cls_root', type=str, default="saved_cls_names", help="Root folder for class names")
     parser.add_argument('--vis_dir', type=str, default="vis", help="Directory for visualizations")
     parser.add_argument('--learning_curve_dir', type=str, default="learning_curves", help="Directory to save learning curves")
-    parser.add_argument('--outputs_dir', type=str, default="results", help="Directory for inference results")
+    parser.add_argument('--outputs_dir', type=str, default="results/images", help="Directory for inference results")
     parser.add_argument('--model_name', type=str, default="yolo11n.pt", help="Model architecture from Ultralytics")    
     parser.add_argument('--image_size', type=int, default=480, help="Input image size for the model")
     parser.add_argument('--batch_size', type=int, default=8, help="Batch size for dataloaders")

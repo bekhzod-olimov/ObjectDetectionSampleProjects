@@ -1,6 +1,6 @@
-# 🧠 Image Classification In Medicine
+# 🧠 Object Detection Sample Projects
 
-Welcome to the **Image Classification In Medicine** repository — a modular and reproducible deep learning pipeline for medical image classification tasks using PyTorch. This repo includes training scripts, inference demos, and evaluation tools to accelerate your computer vision experiments.
+Welcome to the **Object Detection Sample Projects** repository — a modular and reproducible deep learning pipeline for object detection tasks using PyTorch. This repo includes training scripts, inference demos, and evaluation tools to accelerate your computer vision experiments.
 
 ---
 
@@ -41,10 +41,8 @@ python -m ipykernel install --name "ENV_NAME" --user
 
 ## 📁 Available Datasets
 
-The links to the datasets can be found in the [fetch script](https://github.com/bekhzod-olimov/MedicalImageClassificationProjects/blob/7e97ebf29be8a2fb52d0e405921b08cf55683f12/data/fetch.py#L7).
- * Covid Dataset;
-
- * Malaria Dataset;
+The links to the datasets can be found in the [fetch script](https://github.com/bekhzod-olimov/ObjectDetectionSampleProjects/blob/f470170f29d56f12ca5b018ff2afe95db2d3e6d6/data/fetch.py#L7).
+ * Baggage Detection Dataset;
 
  * The more is coming...
 
@@ -55,7 +53,7 @@ Run the training and evaluation pipeline:
 
 ```bash
 
-python main.py --dataset_name pet_disease --dataset_root PATH_TO_YOUR_DATA --batch_size 32 --device "cuda"
+python main.py --dataset_name pet_disease --dataset_root PATH_TO_YOUR_DATA --batch_size 32 --device "cuda" --model_name yolo11n.pt --epochs 20
 
 ```
 
@@ -63,7 +61,7 @@ python main.py --dataset_name pet_disease --dataset_root PATH_TO_YOUR_DATA --bat
 
 ```bash
 
-streamlit run demo.py --ds_nomi pet_disease --outputs_dir PATH_TO_YOUR_OUTPUTS_DIR --model_name "rexnet_150"
+streamlit run demo.py
 
 ```
 

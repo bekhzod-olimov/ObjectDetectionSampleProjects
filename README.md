@@ -44,6 +44,8 @@ python -m ipykernel install --name "ENV_NAME" --user
 The links to the datasets can be found in the [fetch script](https://github.com/bekhzod-olimov/ObjectDetectionSampleProjects/blob/f470170f29d56f12ca5b018ff2afe95db2d3e6d6/data/fetch.py#L7).
  * Baggage Detection Dataset;
 
+ * KIIT-MiTA Dataset;
+
  * The more is coming...
 
  ## 🛠️ Manual to Use This Repo

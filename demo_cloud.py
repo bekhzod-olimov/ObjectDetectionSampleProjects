@@ -125,8 +125,8 @@ class StreamlitApp:
 
         if not sample_image_paths:            
             if self.ds_nomi == "military": root = os.path.join(ims_dir, self.ds_nomi, self.ds_nomi, self.ds_nomi, "KIIT-MiTA")
-            else: 
-                root = os.path.join(ims_dir, self.ds_nomi, self.ds_nomi)
+            elif self.ds_nomi == "fish": root = os.path.join(ims_dir, self.ds_nomi, self.ds_nomi, self.ds_nomi, self.ds_nomi)
+            else: root = os.path.join(ims_dir, self.ds_nomi, self.ds_nomi)
 
             for idx, path in enumerate(random.sample(glob(f"{root}/test/images/*{[file for file in ['.jpg', '.png', '.jpeg', '.bmp']]}"), 5)):
                 with Image.open(path).convert("RGB") as im:

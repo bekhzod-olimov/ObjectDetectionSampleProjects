@@ -19,8 +19,8 @@ class YOLOv11Inference:
         inference_results = self.model(image_dir, device=self.device, verbose=False)
         
         # Visualize results
-        self.inference_vis(inference_results, n_ims, rows)
-
+        self.inference_vis(inference_results, n_ims, rows)      
+            
     def demo(self, im_path):
         
         if isinstance(im_path, str):

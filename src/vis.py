@@ -102,7 +102,7 @@ class Visualization:
         print("Data analysis is in process...\n")
         
         width, text_width, text_height = 0.7, 0.05, 2
-        cls_names = list(self.analysis_datas[save_name].keys()); counts = list(self.analysis_datas[save_name].values())
+        cls_names = list(self.analysis_datas[save_name].keys()); counts = list(self.analysis_datas[save_name].values())        
         
         _, ax = plt.subplots(figsize = (30, 10))
         indices = np.arange(len(counts))

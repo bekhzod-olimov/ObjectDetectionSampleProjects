@@ -21,8 +21,7 @@ def load_model(save_path):
 class StreamlitApp:
     def __init__(self, ds_nomi, model_name, device):
         self.ds_nomi = ds_nomi
-        self.device = device
-        print(f"self.device -> {self.device}")
+        self.device = device        
         self.model_name = model_name        
         self.lang_code = "en"
         self.mode = "image"  # New mode selector

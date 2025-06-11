@@ -53,7 +53,7 @@ Run the training and evaluation pipeline:
 
 ```bash
 
-python main.py --dataset_name pet_disease --dataset_root PATH_TO_YOUR_DATA --batch_size 32 --device "cuda" --model_name yolo11n.pt --epochs 20
+python main.py --dataset_name baggage --dataset_root PATH_TO_YOUR_DATA --batch_size 32 --device "cuda" --model_name yolo11n.pt --epochs 20
 
 ```
 

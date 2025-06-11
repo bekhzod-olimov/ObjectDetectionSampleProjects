@@ -1,4 +1,4 @@
-import os
+import os, yaml
 import torch
 import argparse
 import timm
@@ -31,7 +31,7 @@ def parse_args():
 def main():
     args = parse_args()    
     # ds_nomlari = ["covid", "malaria"]
-    ds_nomlari = ["baggage"]    
+    ds_nomlari = ["military"]    
     # ds_nomlari = ["covid"]    
 
     for ds_nomi in ds_nomlari:
@@ -42,12 +42,28 @@ def main():
         args.dataset_name = ds_nomi  
         device = device if args.device == "cpu" else [0]
 
-        ds_path = os.path.join(args.dataset_root, args.dataset_name, args.dataset_name)        
+        if ds_nomi == "baggage":          
+            ds_path = os.path.join(args.dataset_root, args.dataset_name, args.dataset_name)        
+        elif ds_nomi == "military":
+            ds_path = os.path.join(args.dataset_root, args.dataset_name, args.dataset_name, args.dataset_name, "KIIT-MiTA")
+            yml_file_path = f"{ds_path}/KIIT-MiTA.yml"
+
+            with open(yml_file_path, 'r') as file: data = yaml.safe_load(file)
+                
+            # Update the paths
+            data['train'] = f'{ds_path}/train/images'
+            data['val'] =   f'{ds_path}/valid/images'
+            data['test'] = f'{ds_path}//test/images'
+            
+            # Save the updated YAML content to a file
+            output_path = f'{ds_path}/data.yaml'            
+            with open(output_path, 'w') as file: yaml.dump(data, file, default_flow_style=False)
+        
         train_name = f"{ds_nomi}_{os.path.splitext(args.model_name)[0]}"
         save_path = os.path.join("runs", "detect", train_name)
 
         if not os.path.isdir(ds_path): DatasetDownloader(save_dir=ds_path).download(ds_nomi=args.dataset_name)
-        else: print(f"{args.dataset_name} dataseti allaqachon {args.dataset_root} yo'lagiga yuklab olingan.")      
+        else: print(f"{args.dataset_name} dataseti allaqachon {args.dataset_root} yo'lagiga yuklab olingan.")             
 
         vis = Visualization(root = ds_path, data_types = ["train", "valid", "test"], n_ims = 20, rows = 5, 
                             vis_dir = args.vis_dir, ds_nomi = ds_nomi, cmap = "rgb")

@@ -6,7 +6,7 @@ class DatasetDownloader:
         self.save_dir = save_dir
         self.available_datasets = {
             "baggage": "kaggle datasets download orvile/x-ray-baggage-anomaly-detection",
-            "covid": "kaggle datasets download jongallegos/dataset-for-cs-770",
+            "military": "kaggle datasets download sudipchakrabarty/kiit-mita",
             "marrow": "kaggle datasets download shuvokumarbasakbd/bone-marrow-cell-classification-colorized",
             "fracture": "kaggle datasets download milyas137/fracatlas-fracture-classification-and-segmentation",
         }

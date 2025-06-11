@@ -7,7 +7,7 @@ class DatasetDownloader:
         self.available_datasets = {
             "baggage": "kaggle datasets download orvile/x-ray-baggage-anomaly-detection",
             "military": "kaggle datasets download sudipchakrabarty/kiit-mita",
-            "marrow": "kaggle datasets download shuvokumarbasakbd/bone-marrow-cell-classification-colorized",
+            "fish": "kaggle datasets download mahmoodyousaf/fish-dataset",
             "fracture": "kaggle datasets download milyas137/fracatlas-fracture-classification-and-segmentation",
         }
 

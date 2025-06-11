@@ -115,11 +115,7 @@ class StreamlitApp:
             # New video processing code
             self.handle_video_mode(yolo_infer)
 
-    def handle_image_mode(self, yolo_infer):
-        # Original image handling code remains unchanged
-        sample_ims_dir = "demo_ims"
-        ims_dir = "/home/bekhzod/Desktop/backup/object_detection_project_datasets"       
-        
+    def handle_image_mode(self, yolo_infer):  
         # Original image sampling logic
         sample_ims_dir = "demo_ims"
         ims_dir = "/home/bekhzod/Desktop/backup/object_detection_project_datasets"
@@ -128,9 +124,14 @@ class StreamlitApp:
         makedirs(save_dir)
         sample_image_paths = glob(os.path.join(save_dir, "*.png"))
 
-        if not sample_image_paths:
-            source_dir = f"{ims_dir}/{self.ds_nomi}/{self.ds_nomi}/test/images/*.jpg"
-            for idx, path in enumerate(random.sample(glob(source_dir), 5)):
+        if not sample_image_paths:            
+            if self.ds_nomi == "military":
+                root = os.path.join(ims_dir, self.ds_nomi, self.ds_nomi, self.ds_nomi, "KIIT-MiTA")
+                print(root)
+            else: 
+                root = os.path.join(ims_dir, self.ds_nomi, self.ds_nomi)
+
+            for idx, path in enumerate(random.sample(glob(f"{root}/test/images/*{[file for file in ['.jpg', '.png', '.jpeg', '.bmp']]}"), 5)):
                 with Image.open(path).convert("RGB") as im:
                     im.save(os.path.join(save_dir, f"sample_im_{idx+1}.png"))
             sample_image_paths = glob(os.path.join(save_dir, "*.png"))

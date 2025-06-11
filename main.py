@@ -85,7 +85,7 @@ def main():
         print(f"\nInference process is going to start with the pre-trained model...")
         
         model = YOLO(os.path.join(save_path, "weights", "best.pt"))
-        yolo_infer = YOLOv11Inference(model, save_dir=args.outputs_dir, train_name=train_name)
+        yolo_infer = YOLOv11Inference(model, save_dir=args.outputs_dir, train_name=train_name, device=args.device)
         yolo_infer.run(image_dir = f"{ds_path}/test/images")
 
 if __name__ == "__main__": main()

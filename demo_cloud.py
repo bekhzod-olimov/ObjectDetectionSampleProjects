@@ -125,7 +125,8 @@ class StreamlitApp:
 
         if not sample_image_paths:            
             if self.ds_nomi == "military": root = os.path.join(ims_dir, self.ds_nomi, self.ds_nomi, self.ds_nomi, "KIIT-MiTA")
-            elif self.ds_nomi == "fish": root = os.path.join(ims_dir, self.ds_nomi, self.ds_nomi, self.ds_nomi, self.ds_nomi)
+            elif self.ds_nomi == "fish": root = os.path.join(ims_dir, self.ds_nomi, self.ds_nomi, self.ds_nomi)
+            
             else: root = os.path.join(ims_dir, self.ds_nomi, self.ds_nomi)
 
             for idx, path in enumerate(random.sample(glob(f"{root}/test/images/*{[file for file in ['.jpg', '.png', '.jpeg', '.bmp']]}"), 5)):
@@ -205,7 +206,7 @@ class StreamlitApp:
             st.subheader("Processed Video")
             with open(output_path, "rb") as f:
                 video_bytes = f.read()
-                st.video(video_bytes)  # This ensures immediate playback[4][6]
+                st.video(video_bytes)
 
 def parse_args():
     import argparse
@@ -216,15 +217,10 @@ def parse_args():
 
 if __name__ == "__main__":
     args = parse_args()    
-    available_datasets = [os.path.basename(res).split("_cls_names")[0].split("_")[0] for res in glob(f"saved_cls_names/*.pkl")]
-    # available_datasets = [os.path.splitext(os.path.basename(res))[0] for res in glob(f"results/videos/*.mp4")]
+    available_datasets = [os.path.basename(res).split("_cls_names")[0].split("_")[0] for res in glob(f"saved_cls_names/*.pkl")]    
     ds_nomi = st.sidebar.selectbox("Choose Dataset", options=available_datasets, index=0)
     model_name = st.sidebar.text_input("Model name", value=args.model_name)    
     device = args.device if args.device == "cpu" else [0]    
 
-    app = StreamlitApp(
-        ds_nomi=ds_nomi,
-        model_name=model_name,
-        device=device
-    )
+    app = StreamlitApp( ds_nomi=ds_nomi, model_name=model_name, device=device )
     app.run()

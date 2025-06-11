@@ -15,8 +15,7 @@ from ultralytics import YOLO
 st.set_page_config(page_title="AI Detection Demo", layout="wide")
 
 @st.cache_resource
-def load_model(save_path):  
-    return YOLO(os.path.join(save_path, "weights", "best.pt"))
+def load_model(save_path): return YOLO(os.path.join(save_path, "weights", "best.pt"))
 
 class StreamlitApp:
     def __init__(self, ds_nomi, model_name, device):
@@ -50,7 +49,7 @@ class StreamlitApp:
         }
 
     def process_video(self, model, video_path, save_dir, video_name):
-        """Process video frames and save annotated results"""
+        
         cap = cv2.VideoCapture(video_path)
         width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
         height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))

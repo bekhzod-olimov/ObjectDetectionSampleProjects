@@ -37,10 +37,10 @@ def main():
     for ds_nomi in ds_nomlari:
 
         assert args.device in ["cpu", "cuda"], "Please choose correct device to run the detection model!"
-        print(f"{ds_nomi} dataset bilan train jarayoni boshlanmoqda...")
+        # print(f"{ds_nomi} dataset bilan train jarayoni boshlanmoqda...")
 
-        args.dataset_name = ds_nomi  
-        device = device if args.device == "cpu" else [0]
+        # args.dataset_name = ds_nomi  
+        # device = device if args.device == "cpu" else [0]
 
         if ds_nomi == "baggage":          
             ds_path = os.path.join(args.dataset_root, args.dataset_name, args.dataset_name)        
@@ -75,7 +75,7 @@ def main():
         print(f"Datasetdagi klasslar -> {vis.class_names}")
 
         trainer = YOLOv11Trainer(model_path=os.path.join("ckpts", args.model_name), data_yaml=os.path.join(ds_path, "data.yaml"), 
-                                 train_name=train_name, device=device)
+                                 train_name=train_name, device=args.device)
         trainer.train(epochs = args.epochs, imgsz=args.image_size)   
 
         print(f"\nTraining process is completed. Visualizing learning curves...")     

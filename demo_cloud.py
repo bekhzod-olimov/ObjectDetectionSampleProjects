@@ -49,16 +49,15 @@ class StreamlitApp:
             }
         }
 
-    def process_video(self, model, video_path):
+    def process_video(self, model, video_path, save_dir, video_name):
         """Process video frames and save annotated results"""
         cap = cv2.VideoCapture(video_path)
         width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
         height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-        fps = int(cap.get(cv2.CAP_PROP_FPS))
+        fps = int(cap.get(cv2.CAP_PROP_FPS))      
         
-        # Create temp output file
-        temp_dir = tempfile.mkdtemp()
-        output_path = os.path.join(temp_dir, "processed_video.mp4")
+        # Save video file
+        output_path = os.path.join(save_dir, f"{video_name}.mp4")
         fourcc = cv2.VideoWriter_fourcc(*'mp4v')
         out = cv2.VideoWriter(output_path, fourcc, fps, (width, height))
         
@@ -203,7 +202,7 @@ class StreamlitApp:
                 video_path = tfile.name
 
             # Process video
-            output_path = self.process_video(yolo_infer, video_path)
+            output_path = self.process_video(yolo_infer, video_path, save_dir=save_dir, video_name=self.ds_nomi)            
 
             st.subheader("Processed Video")
             with open(output_path, "rb") as f:

@@ -43,8 +43,8 @@ def main():
     device = device if args.device == "cpu" else [0]
     ds_nomi = args.dataset_name    
 
-    if ds_nomi in ["baggage", "fish"]:          
-        ds_path = os.path.join(args.dataset_root, args.dataset_name, args.dataset_name)        
+    if ds_nomi in ["baggage"]: ds_path = os.path.join(args.dataset_root, args.dataset_name, args.dataset_name)
+    elif ds_nomi in ["fish"]: ds_path = os.path.join(args.dataset_root, args.dataset_name, args.dataset_name, args.dataset_name)
     elif ds_nomi == "military":
         ds_path = os.path.join(args.dataset_root, args.dataset_name, args.dataset_name, args.dataset_name, "KIIT-MiTA")
         yml_file_path = f"{ds_path}/KIIT-MiTA.yml"

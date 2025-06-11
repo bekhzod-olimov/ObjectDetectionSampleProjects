@@ -107,12 +107,8 @@ class StreamlitApp:
         model = load_model(save_path=os.path.join("runs", "detect", f"{self.train_name}"))
         yolo_infer = YOLOv11Inference(model, train_name=self.train_name, device = self.device)
 
-        if self.mode == "image":
-            # Existing image processing code
-            self.handle_image_mode(yolo_infer)
-        else:
-            # New video processing code
-            self.handle_video_mode(yolo_infer)
+        # Start Processing
+        self.handle_image_mode(yolo_infer) if self.mode == "image" else self.handle_video_mode(yolo_infer)        
 
     def handle_image_mode(self, yolo_infer):  
         # Original image sampling logic

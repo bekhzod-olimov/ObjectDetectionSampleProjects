@@ -124,9 +124,7 @@ class StreamlitApp:
         sample_image_paths = glob(os.path.join(save_dir, "*.png"))
 
         if not sample_image_paths:            
-            if self.ds_nomi == "military":
-                root = os.path.join(ims_dir, self.ds_nomi, self.ds_nomi, self.ds_nomi, "KIIT-MiTA")
-                print(root)
+            if self.ds_nomi == "military": root = os.path.join(ims_dir, self.ds_nomi, self.ds_nomi, self.ds_nomi, "KIIT-MiTA")
             else: 
                 root = os.path.join(ims_dir, self.ds_nomi, self.ds_nomi)
 

@@ -41,9 +41,9 @@ class YOLOv11Inference:
     def process_res(self, r, or_im_rgb, demo=None):
 
         self.num_bboxes = len(r)        
-        for i in r:   
-            # cls_names = i.names
-            cls_names = {i: "DIQQAT" for i in range(len(i.names))}            
+        for i in r:               
+            if "baggage" in self.train_name: cls_names = {i: "DIQQAT" for i in range(len(i.names))}
+            else: cls_names = i.names            
             for bbox in i.boxes:                
                 # text = f"{list(cls_names.values())[int(bbox.cls.item())]} {(bbox.conf.item() * 100):.2f}%"
                 text = f"{list(cls_names.values())[int(bbox.cls.item())]}"

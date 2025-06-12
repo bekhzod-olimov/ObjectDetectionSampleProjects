@@ -56,7 +56,7 @@ class StreamlitApp:
         fps = int(cap.get(cv2.CAP_PROP_FPS))      
         
         # Save video file
-        output_path = os.path.join(save_dir, f"{video_name}.mp4")
+        output_path = os.path.join(save_dir, f"{video_name}_with_detections.mp4")
         fourcc = cv2.VideoWriter_fourcc(*'mp4v')
         out = cv2.VideoWriter(output_path, fourcc, fps, (width, height))
         
@@ -174,7 +174,7 @@ class StreamlitApp:
         os.makedirs(save_dir, exist_ok=True)
 
         # Video selection/upload
-        sample_vid_dir = "sample_videos"
+        sample_vid_dir = os.path.join("sample_videos", self.ds_nomi)
         os.makedirs(sample_vid_dir, exist_ok=True)
         sample_videos = glob(os.path.join(sample_vid_dir, "*.mp4"))        
 

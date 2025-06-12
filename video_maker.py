@@ -3,7 +3,7 @@ import os
 import sys
 from glob import glob
 
-def images_to_video(image_folder, output_video_path, n_ims, fps=30):
+def images_to_video(image_folder, output_video_dir, n_ims, fps=30):
     # Get sorted image paths
     images = sorted(glob(os.path.join(image_folder, '*')))[:n_ims]
     if not images:
@@ -15,6 +15,10 @@ def images_to_video(image_folder, output_video_path, n_ims, fps=30):
     height, width, _ = first_image.shape
 
     fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+    ds_name = image_folder.split("object_detection_project_datasets/")[-1].split("/")[0]    
+    temp = os.path.join(output_video_dir, ds_name)
+    os.makedirs(temp, exist_ok=True)    
+    output_video_path = os.path.join(temp, f"{ds_name}.mp4")
     video = cv2.VideoWriter(output_video_path, fourcc, fps, (width, height))
 
     for img_path in images:

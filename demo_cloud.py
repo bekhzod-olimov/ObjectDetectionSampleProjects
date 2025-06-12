@@ -176,17 +176,18 @@ class StreamlitApp:
         # Video selection/upload
         sample_vid_dir = "sample_videos"
         os.makedirs(sample_vid_dir, exist_ok=True)
-        sample_videos = glob(os.path.join(sample_vid_dir, "*.mp4"))
+        sample_videos = glob(os.path.join(sample_vid_dir, "*.mp4"))        
 
         if not sample_videos:
             # Add sample video handling logic if needed
             st.warning("No sample videos found in sample_videos directory")
             sample_videos = []
 
+                
         selected_video = st.selectbox("Select sample video", sample_videos)
-        uploaded_video = st.file_uploader("Or upload video", type=["mp4", "avi", "mov"])
-
+        uploaded_video = st.file_uploader("Or upload video", type=["mp4", "avi", "mov"])     
         video_path = uploaded_video if uploaded_video else selected_video
+        
 
         if video_path:
             # Save uploaded video to temp file

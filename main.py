@@ -40,12 +40,11 @@ def main():
     # print(f"{ds_nomi} dataset bilan train jarayoni boshlanmoqda...")
 
     # args.dataset_name = ds_nomi  
-    device = device if args.device == "cpu" else [0]
-    ds_nomi = args.dataset_name    
+    device = device if args.device == "cpu" else [0]    
 
-    if ds_nomi in ["baggage"]: ds_path = os.path.join(args.dataset_root, args.dataset_name, args.dataset_name)
-    elif ds_nomi in ["fish"]: ds_path = os.path.join(args.dataset_root, args.dataset_name, args.dataset_name, args.dataset_name)
-    elif ds_nomi == "military":
+    if args.dataset_name in ["baggage", "plastic"]: ds_path = os.path.join(args.dataset_root, args.dataset_name, args.dataset_name)
+    elif args.dataset_name in ["fish"]: ds_path = os.path.join(args.dataset_root, args.dataset_name, args.dataset_name, args.dataset_name)
+    elif args.dataset_name == "military":
         ds_path = os.path.join(args.dataset_root, args.dataset_name, args.dataset_name, args.dataset_name, "KIIT-MiTA")
         yml_file_path = f"{ds_path}/KIIT-MiTA.yml"
 
@@ -59,15 +58,15 @@ def main():
         # Save the updated YAML content to a file
         output_path = f'{ds_path}/data.yaml'            
         with open(output_path, 'w') as file: yaml.dump(data, file, default_flow_style=False)
-    
-    train_name = f"{ds_nomi}_{os.path.splitext(args.model_name)[0]}"
-    save_path = os.path.join("runs", "detect", train_name)
+
+    train_name = f"{args.dataset_name}_{os.path.splitext(args.model_name)[0]}"
+    save_path = os.path.join("runs", "detect", train_name)    
 
     if not os.path.isdir(ds_path): DatasetDownloader(save_dir=ds_path).download(ds_nomi=args.dataset_name)
     else: print(f"{args.dataset_name} dataseti allaqachon {args.dataset_root} yo'lagiga yuklab olingan.")             
 
     vis = Visualization(root = ds_path, data_types = ["train", "valid", "test"], n_ims = 20, rows = 5, 
-                        vis_dir = args.vis_dir, ds_nomi = ds_nomi, cmap = "rgb")
+                        vis_dir = args.vis_dir, ds_nomi = args.dataset_name, cmap = "rgb")
     vis.analysis(); vis.visualization()
 
     os.makedirs(args.cls_root, exist_ok=True)

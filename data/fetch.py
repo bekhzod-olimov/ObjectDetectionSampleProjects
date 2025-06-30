@@ -7,13 +7,15 @@ class DatasetDownloader:
         self.available_datasets = {
             "baggage": "kaggle datasets download orvile/x-ray-baggage-anomaly-detection",
             "military": "kaggle datasets download sudipchakrabarty/kiit-mita",
-            "fish": "kaggle datasets download mahmoodyousaf/fish-dataset",            
+            "fish": "kaggle datasets download mahmoodyousaf/fish-dataset",    
+            "plastic": "kaggle datasets download yadavmohit04/plastic-multiclass-dataset"        
         }
 
     def download(self, ds_nomi=None):
-        assert ds_nomi in self.available_datasets, f"Mavjud bo'lgan datasetlardan birini tanlang: {list(self.available_datasets.keys())}"
-
+        
+        assert ds_nomi in self.available_datasets, f"Mavjud bo'lgan datasetlardan birini tanlang: {list(self.available_datasets.keys())}"        
         dataset_path = os.path.join(self.save_dir, ds_nomi)
+
         if os.path.isfile(f"{dataset_path}.csv") or os.path.isdir(dataset_path):
             print(f"Dataset allaqachon mavjud: {dataset_path}")
             return

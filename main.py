@@ -1,14 +1,8 @@
 import os, yaml
 import argparse
-import pickle
-from src.train import YOLOv11Trainer
 from src.vis import Visualization
-from src.plot import YOLOVisualizer
-from src.infer import YOLOv11Inference
-from src.transform import get_tfs
 from data.convert import YOLOtoCOCOConverter
 from data.fetch import DatasetDownloader
-from ultralytics import YOLO
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Train and evaluate a classification model")
@@ -59,9 +53,7 @@ def main():
         with open(output_path, 'w') as file: yaml.dump(data, file, default_flow_style=False)    
 
     if not os.path.isdir(ds_path): DatasetDownloader(save_dir=ds_path).download(ds_nomi=args.dataset_name)
-    else: print(f"{args.dataset_name} dataseti allaqachon {args.dataset_root} yo'lagiga yuklab olingan.")        
-    
-    
+    else: print(f"{args.dataset_name} dataseti allaqachon {args.dataset_root} yo'lagiga yuklab olingan.")   
     
     if not "yolo" in args.model_name:  
         coco_ds_path = os.path.join(args.dataset_root, f"{args.dataset_name}_COCO")
@@ -80,6 +72,9 @@ def main():
     vis.analysis(); vis.visualization()
     
     if "yolo" in args.model_name:  
+        from src.train import YOLOv11Trainer
+        from src.plot import YOLOVisualizer
+        from src.infer import YOLOv11Inference
         train_name = f"{args.dataset_name}_{os.path.splitext(args.model_name)[0]}"
         save_path = os.path.join("runs", "detect", train_name)    
         
@@ -92,11 +87,31 @@ def main():
         visualizer.visualize()        
 
         print(f"\nInference process is going to start with the pre-trained model...")
-        
+        from ultralytics import YOLO
         model = YOLO(os.path.join(save_path, "weights", "best.pt"))
         yolo_infer = YOLOv11Inference(model, save_dir=args.outputs_dir, train_name=train_name, device=args.device)
         yolo_infer.run(image_dir = f"{ds_path}/test/images")
     
-    else: pass        
+    else: 
+        
+        from src.train import DFINETrainer
+        trainer = DFINETrainer(
+        config_path="/home/bekhzod/Desktop/ObjectDetectionSampleProjects/D-FINE/configs/dfine/custom/dfine_hgnetv2_l_custom.yml",
+        save_dir="D-FINE",
+        model_ckpt="/home/bekhzod/Desktop/backup/dfine/dfine_l_coco.pth",
+        device="0",
+        nproc=1
+    )
+
+    from src.utils import edit_custom_detection_yaml
+    edit_custom_detection_yaml(
+        yaml_path="D-FINE/configs/dataset/custom_detection.yml",
+        train_img_folder="/home/bekhzod/Desktop/backup/object_detection_project_datasets/military_COCO/train",
+        train_ann_file="/home/bekhzod/Desktop/backup/object_detection_project_datasets/military_COCO/annotations/train_annotations.json",
+        val_img_folder="/home/bekhzod/Desktop/backup/object_detection_project_datasets/military_COCO/valid",
+        val_ann_file="/home/bekhzod/Desktop/backup/object_detection_project_datasets/military_COCO/annotations/valid_annotations.json"    
+    )
+
+    trainer.train()    
 
 if __name__ == "__main__": main()

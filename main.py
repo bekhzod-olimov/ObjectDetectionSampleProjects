@@ -1,13 +1,12 @@
 import os, yaml
-import torch
 import argparse
-import timm
 import pickle
 from src.train import YOLOv11Trainer
 from src.vis import Visualization
 from src.plot import YOLOVisualizer
 from src.infer import YOLOv11Inference
 from src.transform import get_tfs
+from data.convert import YOLOtoCOCOConverter
 from data.fetch import DatasetDownloader
 from ultralytics import YOLO
 
@@ -45,7 +44,7 @@ def main():
     if args.dataset_name in ["baggage", "plastic"]: ds_path = os.path.join(args.dataset_root, args.dataset_name, args.dataset_name)
     elif args.dataset_name in ["fish"]: ds_path = os.path.join(args.dataset_root, args.dataset_name, args.dataset_name, args.dataset_name)
     elif args.dataset_name == "military":
-        ds_path = os.path.join(args.dataset_root, args.dataset_name, args.dataset_name, args.dataset_name, "KIIT-MiTA")
+        ds_path = os.path.join(args.dataset_root, args.dataset_name, args.dataset_name, args.dataset_name, "KIIT-MiTA")        
         yml_file_path = f"{ds_path}/KIIT-MiTA.yml"
 
         with open(yml_file_path, 'r') as file: data = yaml.safe_load(file)
@@ -57,10 +56,7 @@ def main():
         
         # Save the updated YAML content to a file
         output_path = f'{ds_path}/data.yaml'            
-        with open(output_path, 'w') as file: yaml.dump(data, file, default_flow_style=False)
-
-    train_name = f"{args.dataset_name}_{os.path.splitext(args.model_name)[0]}"
-    save_path = os.path.join("runs", "detect", train_name)    
+        with open(output_path, 'w') as file: yaml.dump(data, file, default_flow_style=False)    
 
     if not os.path.isdir(ds_path): DatasetDownloader(save_dir=ds_path).download(ds_nomi=args.dataset_name)
     else: print(f"{args.dataset_name} dataseti allaqachon {args.dataset_root} yo'lagiga yuklab olingan.")             
@@ -73,19 +69,29 @@ def main():
     with open(f"{args.cls_root}/{args.dataset_name}_cls_names.pkl", "wb") as f: pickle.dump(vis.class_names, f)
 
     print(f"Datasetdagi klasslar -> {vis.class_names}")
-
-    trainer = YOLOv11Trainer(model_path=os.path.join("ckpts", args.model_name), data_yaml=os.path.join(ds_path, "data.yaml"), 
-                                train_name=train_name, device=args.device)
-    trainer.train(epochs = args.epochs, imgsz=args.image_size)   
-
-    print(f"\nTraining process is completed. Visualizing learning curves...")     
-    visualizer = YOLOVisualizer(vis_dir=save_path, save_dir=args.learning_curve_dir)
-    visualizer.visualize()        
-
-    print(f"\nInference process is going to start with the pre-trained model...")
     
-    model = YOLO(os.path.join(save_path, "weights", "best.pt"))
-    yolo_infer = YOLOv11Inference(model, save_dir=args.outputs_dir, train_name=train_name, device=args.device)
-    yolo_infer.run(image_dir = f"{ds_path}/test/images")
+    if "yolo" in args.model_name:  
+        train_name = f"{args.dataset_name}_{os.path.splitext(args.model_name)[0]}"
+        save_path = os.path.join("runs", "detect", train_name)    
+        
+        trainer = YOLOv11Trainer(model_path=os.path.join("ckpts", args.model_name), data_yaml=os.path.join(ds_path, "data.yaml"), 
+                                    train_name=train_name, device=args.device)
+        trainer.train(epochs = args.epochs, imgsz=args.image_size)   
+
+        print(f"\nTraining process is completed. Visualizing learning curves...")     
+        visualizer = YOLOVisualizer(vis_dir=save_path, save_dir=args.learning_curve_dir)
+        visualizer.visualize()        
+
+        print(f"\nInference process is going to start with the pre-trained model...")
+        
+        model = YOLO(os.path.join(save_path, "weights", "best.pt"))
+        yolo_infer = YOLOv11Inference(model, save_dir=args.outputs_dir, train_name=train_name, device=args.device)
+        yolo_infer.run(image_dir = f"{ds_path}/test/images")
+    else:
+        converter = YOLOtoCOCOConverter(
+            root_dir=ds_path,            
+            output_dir=os.path.join(args.dataset_root, f"{args.dataset_name}_COCO")
+        )
+        converter.convert_all()
 
 if __name__ == "__main__": main()

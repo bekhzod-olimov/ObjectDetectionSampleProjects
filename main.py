@@ -59,16 +59,25 @@ def main():
         with open(output_path, 'w') as file: yaml.dump(data, file, default_flow_style=False)    
 
     if not os.path.isdir(ds_path): DatasetDownloader(save_dir=ds_path).download(ds_nomi=args.dataset_name)
-    else: print(f"{args.dataset_name} dataseti allaqachon {args.dataset_root} yo'lagiga yuklab olingan.")             
-
+    else: print(f"{args.dataset_name} dataseti allaqachon {args.dataset_root} yo'lagiga yuklab olingan.")        
+    
+    
+    
+    if not "yolo" in args.model_name:  
+        coco_ds_path = os.path.join(args.dataset_root, f"{args.dataset_name}_COCO")
+        if not os.path.isdir(coco_ds_path): 
+            print("\n Converting YOLO data into COCO data...\n")
+            converter = YOLOtoCOCOConverter(
+                root_dir=ds_path,            
+                output_dir=coco_ds_path
+            )
+            converter.convert_all()
+        ann_type = "coco"
+    
+    else: ann_type = "yolo"
     vis = Visualization(root = ds_path, data_types = ["train", "valid", "test"], n_ims = 20, rows = 5, 
-                        vis_dir = args.vis_dir, ds_nomi = args.dataset_name, cmap = "rgb")
+                        cls_root=args.cls_root, vis_dir = args.vis_dir, ds_nomi = args.dataset_name, cmap = "rgb", ann_type=ann_type)
     vis.analysis(); vis.visualization()
-
-    os.makedirs(args.cls_root, exist_ok=True)
-    with open(f"{args.cls_root}/{args.dataset_name}_cls_names.pkl", "wb") as f: pickle.dump(vis.class_names, f)
-
-    print(f"Datasetdagi klasslar -> {vis.class_names}")
     
     if "yolo" in args.model_name:  
         train_name = f"{args.dataset_name}_{os.path.splitext(args.model_name)[0]}"
@@ -87,11 +96,7 @@ def main():
         model = YOLO(os.path.join(save_path, "weights", "best.pt"))
         yolo_infer = YOLOv11Inference(model, save_dir=args.outputs_dir, train_name=train_name, device=args.device)
         yolo_infer.run(image_dir = f"{ds_path}/test/images")
-    else:
-        converter = YOLOtoCOCOConverter(
-            root_dir=ds_path,            
-            output_dir=os.path.join(args.dataset_root, f"{args.dataset_name}_COCO")
-        )
-        converter.convert_all()
+    
+    else: pass        
 
 if __name__ == "__main__": main()

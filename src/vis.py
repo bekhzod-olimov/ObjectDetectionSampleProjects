@@ -1,11 +1,14 @@
-import os, cv2, yaml, json, random, numpy as np
+import pickle, json, random
+import os, cv2, yaml, numpy as np
 from glob import glob
 from PIL import Image, ImageDraw
 import matplotlib.pyplot as plt
 
 class Visualization:
-    def __init__(self, root, data_types, n_ims, rows, vis_dir, ds_nomi, cmap=None, ann_type="coco"):
+    def __init__(self, root, data_types, n_ims, rows, vis_dir, ds_nomi, cls_root, cmap=None, ann_type="coco"):
         self.root = root if ann_type == "yolo" else f"{os.path.dirname(os.path.dirname(os.path.dirname(root)))}_COCO"
+        self.cls_root = cls_root
+        os.makedirs(self.cls_root, exist_ok=True)
         self.n_ims, self.rows = n_ims, rows
         self.cmap, self.data_types = cmap, data_types
         self.vis_dir, self.ds_nomi = vis_dir, ds_nomi
@@ -34,6 +37,8 @@ class Visualization:
             else:
                 raise RuntimeError("No COCO annotations files found for class names extraction.")
         self.class_dict = {index: name for index, name in enumerate(self.class_names)}
+        with open(f"{self.cls_root}/{self.ds_nomi}_cls_names.pkl", "wb") as f: pickle.dump(self.class_names, f)
+        print(f"Datasetdagi klasslar -> {self.class_names}")
 
     def get_bboxes(self):
         self.vis_datas, self.analysis_datas, self.im_paths = {}, {}, {}
